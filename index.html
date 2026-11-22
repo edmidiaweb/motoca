@@ -1,0 +1,1270 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MOTOCA — Controle Fácil de Entregas</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --surface: #1e293b;
+      --surface-2: #273549;
+      --border: #334155;
+      --text: #f8fafc;
+      --muted: #cbd5e1;
+      --primary: #f59e0b;
+      --primary-hover: #d97706;
+      --success: #10b981;
+      --danger: #ef4444;
+      --info: #38bdf8;
+      --radius: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      padding: 14px;
+      padding-bottom: 40px;
+    }
+
+    .app {
+      max-width: 600px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* Topo */
+    .topbar {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .topbar h1 {
+      font-size: 1.45rem;
+      color: var(--primary);
+      letter-spacing: 0.04em;
+    }
+
+    .topbar p {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .btn-config-topo {
+      background: var(--surface-2);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 14px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* Cartões */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+    }
+
+    .card-titulo {
+      font-size: 1.05rem;
+      font-weight: 800;
+      margin-bottom: 12px;
+      color: var(--text);
+    }
+
+    /* Resumo Fácil */
+    .resumo-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .caixa-info {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+    }
+
+    .caixa-info span {
+      display: block;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    .caixa-info strong {
+      display: block;
+      font-size: 1.15rem;
+      margin-top: 2px;
+    }
+
+    .explicacao-facil {
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 0.86rem;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+
+    .barra-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      margin-bottom: 6px;
+    }
+
+    .barra-fundo {
+      width: 100%;
+      height: 12px;
+      background: var(--bg);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .barra-preenchimento {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--primary), var(--success));
+      transition: width 0.3s ease;
+    }
+
+    /* Campos grandes e fáceis */
+    .linha-form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .campo {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .campo.inteiro {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--muted);
+    }
+
+    input, select {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 13px;
+      color: var(--text);
+      font-size: 1.05rem;
+      min-height: 48px;
+    }
+
+    input:focus, select:focus {
+      outline: 2px solid var(--primary);
+      border-color: transparent;
+    }
+
+    .valor-principal {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .faixa-km {
+      background: var(--surface-2);
+      border-radius: 10px;
+      padding: 10px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.88rem;
+      margin-bottom: 12px;
+    }
+
+    /* Rateio */
+    .quadro-guardar {
+      background: var(--surface-2);
+      border-radius: 14px;
+      padding: 14px;
+      margin-top: 6px;
+    }
+
+    .quadro-guardar h3 {
+      font-size: 0.95rem;
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
+
+    .grade-guardar {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .item-guardar {
+      background: var(--bg);
+      border-radius: 10px;
+      padding: 10px;
+      border-left: 4px solid var(--info);
+    }
+
+    .item-guardar span {
+      display: block;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    .item-guardar strong {
+      font-size: 1.05rem;
+    }
+
+    .sobra-lucro {
+      grid-column: 1 / -1;
+      background: var(--bg);
+      border-radius: 12px;
+      padding: 12px 14px;
+      border-left: 5px solid var(--success);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 4px;
+    }
+
+    .sobra-lucro strong {
+      font-size: 1.25rem;
+    }
+
+    /* Mensagem de Parabéns / Incentivo */
+    .banner-resultado {
+      margin-top: 12px;
+      border-radius: 14px;
+      padding: 14px;
+      display: none;
+    }
+
+    .banner-resultado.ativo {
+      display: block;
+    }
+
+    .banner-resultado.super {
+      background: rgba(245, 158, 11, 0.16);
+      border: 1px solid var(--primary);
+    }
+
+    .banner-resultado.parabens {
+      background: rgba(16, 185, 129, 0.16);
+      border: 1px solid var(--success);
+    }
+
+    .banner-resultado.incentivo {
+      background: rgba(56, 189, 248, 0.14);
+      border: 1px solid var(--info);
+    }
+
+    .banner-resultado h4 {
+      font-size: 1rem;
+      margin-bottom: 4px;
+    }
+
+    .banner-resultado p {
+      font-size: 0.9rem;
+      color: var(--text);
+    }
+
+    .valor-lucrado-badge {
+      display: inline-block;
+      margin-top: 8px;
+      background: var(--bg);
+      padding: 6px 12px;
+      border-radius: 10px;
+      font-weight: 800;
+      font-size: 0.98rem;
+      color: var(--success);
+    }
+
+    /* Botões grandes */
+    .acoes-dia {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    button {
+      border: none;
+      border-radius: 12px;
+      padding: 14px;
+      font-size: 0.98rem;
+      font-weight: 800;
+      cursor: pointer;
+      min-height: 50px;
+    }
+
+    .btn-salvar {
+      background: var(--primary);
+      color: #0f172a;
+    }
+
+    .btn-salvar:hover {
+      background: var(--primary-hover);
+    }
+
+    .btn-whats {
+      background: var(--surface-2);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-pequeno {
+      min-height: 38px;
+      padding: 8px 12px;
+      font-size: 0.82rem;
+      border-radius: 10px;
+    }
+
+    .btn-apagar {
+      background: rgba(239, 68, 68, 0.18);
+      color: #fca5a5;
+      border: 1px solid rgba(239, 68, 68, 0.35);
+    }
+
+    /* Lista de Despesas Mensais */
+    .despesa-linha {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 12px;
+      margin-bottom: 8px;
+    }
+
+    .despesa-linha span {
+      font-size: 0.9rem;
+      font-weight: 600;
+      flex: 1;
+    }
+
+    /* Histórico */
+    .dia-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .aviso-flutuante {
+      position: fixed;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--success);
+      color: #052e16;
+      font-weight: 800;
+      padding: 12px 20px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s;
+      z-index: 99;
+    }
+
+    .aviso-flutuante.mostrar {
+      opacity: 1;
+    }
+
+    .oculto { display: none; }
+    .cor-amarela { color: var(--primary); }
+    .cor-verde { color: var(--success); }
+    .cor-vermelha { color: var(--danger); }
+    .cor-azul { color: var(--info); }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <!-- Topo -->
+    <header class="topbar">
+      <div>
+        <h1>MOTOCA</h1>
+        <p id="textoTopoPeriodo">Controle simples do seu dia</p>
+      </div>
+      <button type="button" class="btn-config-topo" onclick="alternarConfig()">
+        ⚙️ Configurar
+      </button>
+    </header>
+
+    <!-- Painel de Configuração (Fácil e Direto) -->
+    <section id="painelConfig" class="card oculto">
+      <div class="card-titulo">1. Suas Contas e Meta do Mês</div>
+
+      <div class="linha-form">
+        <div class="campo">
+          <label for="dataInicio">Começar a contar em</label>
+          <input type="date" id="dataInicio" />
+        </div>
+
+        <div class="campo">
+          <label for="ganhoEstimadoMes">Ganho estimado do mês (R$)</label>
+          <input type="text" inputmode="decimal" id="ganhoEstimadoMes" placeholder="3500,00" />
+        </div>
+
+        <div class="campo">
+          <label for="diasSemana">Dias que trabalha na semana</label>
+          <select id="diasSemana">
+            <option value="5">5 dias (Seg a Sex)</option>
+            <option value="6">6 dias (Seg a Sáb)</option>
+            <option value="7">7 dias (Todos os dias)</option>
+          </select>
+        </div>
+
+        <div class="campo">
+          <label for="alimentacaoDia">Alimentação por dia (R$)</label>
+          <input type="text" inputmode="decimal" id="alimentacaoDia" placeholder="20,00" />
+        </div>
+
+        <div class="campo">
+          <label for="precoGasolina">Preço da gasolina (R$/L)</label>
+          <input type="text" inputmode="decimal" id="precoGasolina" placeholder="6,10" />
+        </div>
+
+        <div class="campo">
+          <label for="consumoMoto">Quantos km faz por litro</label>
+          <input type="text" inputmode="decimal" id="consumoMoto" placeholder="35" />
+        </div>
+
+        <div class="campo">
+          <label for="custoOleo">Valor da troca de óleo (R$)</label>
+          <input type="text" inputmode="decimal" id="custoOleo" placeholder="45,00" />
+        </div>
+
+        <div class="campo">
+          <label for="intervaloOleo">Troca óleo a cada (km)</label>
+          <input type="text" inputmode="decimal" id="intervaloOleo" placeholder="1000" />
+        </div>
+
+        <div class="campo">
+          <label for="kmMedioDia">KM médio que roda no dia</label>
+          <input type="text" inputmode="decimal" id="kmMedioDia" placeholder="90" />
+        </div>
+
+        <div class="campo">
+          <label for="manutencaoDia">Guardar p/ manutenção/dia (R$)</label>
+          <input type="text" inputmode="decimal" id="manutencaoDia" placeholder="10,00" />
+        </div>
+      </div>
+
+      <div class="card-titulo" style="margin-top: 10px; font-size: 0.95rem;">
+        Despesas Fixas do Mês (Água, Luz, Aluguel, Internet, Doc. Moto, Lazer...)
+      </div>
+
+      <div class="linha-form">
+        <div class="campo">
+          <label for="novaDespesaNome">Nome da conta</label>
+          <input type="text" id="novaDespesaNome" placeholder="Ex: Aluguel, Água, Luz" />
+        </div>
+        <div class="campo">
+          <label for="novaDespesaValor">Valor no mês (R$)</label>
+          <input type="text" inputmode="decimal" id="novaDespesaValor" placeholder="0,00" />
+        </div>
+        <div class="campo inteiro">
+          <button type="button" class="btn-whats" onclick="adicionarDespesa()">+ Adicionar Conta</button>
+        </div>
+      </div>
+
+      <div id="listaDespesas"></div>
+
+      <button type="button" class="btn-salvar" style="width: 100%; margin-top: 10px;" onclick="salvarConfig()">
+        Salvar Configurações
+      </button>
+    </section>
+
+    <!-- Resumo Claro -->
+    <section class="card">
+      <div class="resumo-grid">
+        <div class="caixa-info">
+          <span>Dias que faltam trabalhar</span>
+          <strong id="kpiDiasRestantes" class="cor-azul">0 dias</strong>
+        </div>
+        <div class="caixa-info">
+          <span>Despesa p/ os dias restantes</span>
+          <strong id="kpiDespesaProporcional" class="cor-vermelha">R$ 0,00</strong>
+        </div>
+        <div class="caixa-info">
+          <span>Meta de ganho por dia</span>
+          <strong id="kpiMetaGanhoDia" class="cor-amarela">R$ 0,00</strong>
+        </div>
+        <div class="caixa-info">
+          <span>Lucro desejado p/ o período</span>
+          <strong id="kpiLucroPeriodo" class="cor-verde">R$ 0,00</strong>
+        </div>
+      </div>
+
+      <div class="explicacao-facil" id="textoCalculoDespesas">
+        Calculando suas despesas por dia útil...
+      </div>
+
+      <div class="barra-header">
+        <span>Seu lucro acumulado</span>
+        <strong id="textoProgresso">R$ 0,00 / R$ 0,00</strong>
+      </div>
+      <div class="barra-fundo">
+        <div class="barra-preenchimento" id="barraProgresso"></div>
+      </div>
+    </section>
+
+    <!-- Fechamento do Dia -->
+    <section class="card">
+      <div class="card-titulo">Fechar o Dia de Trabalho</div>
+
+      <div class="linha-form">
+        <div class="campo">
+          <label for="dataDia">Data</label>
+          <input type="date" id="dataDia" />
+        </div>
+
+        <div class="campo">
+          <label for="ganhoDia">Quanto ganhou hoje (R$)</label>
+          <input
+            type="text"
+            inputmode="decimal"
+            id="ganhoDia"
+            class="valor-principal"
+            placeholder="0,00"
+            oninput="calcularHoje()"
+          />
+        </div>
+      </div>
+
+      <div class="linha-form">
+        <div class="campo">
+          <label for="kmInicial">KM inicial (opcional)</label>
+          <input type="text" inputmode="decimal" id="kmInicial" placeholder="Ex: 12400" oninput="calcularHoje()" />
+        </div>
+
+        <div class="campo">
+          <label for="kmFinal">KM final (opcional)</label>
+          <input type="text" inputmode="decimal" id="kmFinal" placeholder="Ex: 12490" oninput="calcularHoje()" />
+        </div>
+      </div>
+
+      <div class="faixa-km">
+        <span>Distância rodada hoje:</span>
+        <strong id="textoKmHoje" class="cor-azul">90 km (média)</strong>
+      </div>
+
+      <div class="quadro-guardar">
+        <h3>Quanto você deve guardar hoje:</h3>
+        <div class="grade-guardar">
+          <div class="item-guardar">
+            <span>Combustível</span>
+            <strong id="guardarComb">R$ 0,00</strong>
+          </div>
+          <div class="item-guardar">
+            <span>Troca de óleo</span>
+            <strong id="guardarOleo">R$ 0,00</strong>
+          </div>
+          <div class="item-guardar">
+            <span>Alimentação</span>
+            <strong id="guardarAlim">R$ 0,00</strong>
+          </div>
+          <div class="item-guardar">
+            <span>Contas + Manutenção</span>
+            <strong id="guardarContas">R$ 0,00</strong>
+          </div>
+          <div class="sobra-lucro">
+            <div>
+              <span style="font-size: 0.8rem; color: var(--muted); display: block;">Lucro líquido de hoje</span>
+              <small id="subtextoMetaHoje" style="font-size: 0.75rem; color: var(--muted);">Meta de lucro hoje: R$ 0,00</small>
+            </div>
+            <strong id="lucroHoje" class="cor-verde">R$ 0,00</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mensagem Motivacional / Parabéns / Super Felicitações -->
+      <div id="bannerResultado" class="banner-resultado">
+        <h4 id="bannerTitulo"></h4>
+        <p id="bannerTexto"></p>
+        <div id="bannerValor" class="valor-lucrado-badge"></div>
+      </div>
+
+      <div class="acoes-dia">
+        <button type="button" class="btn-salvar" onclick="salvarDia()">Salvar Dia</button>
+        <button type="button" class="btn-whats" onclick="copiarWhatsApp()">Enviar p/ WhatsApp</button>
+      </div>
+    </section>
+
+    <!-- Caixinhas Acumuladas -->
+    <section class="card">
+      <div class="card-titulo">Total Guardado nas Caixinhas</div>
+      <div class="grade-guardar">
+        <div class="item-guardar">
+          <span>Combustível</span>
+          <strong id="totalComb">R$ 0,00</strong>
+        </div>
+        <div class="item-guardar">
+          <span>Troca de óleo</span>
+          <strong id="totalOleo">R$ 0,00</strong>
+        </div>
+        <div class="item-guardar">
+          <span>Alimentação</span>
+          <strong id="totalAlim">R$ 0,00</strong>
+        </div>
+        <div class="item-guardar">
+          <span>Contas + Manutenção</span>
+          <strong id="totalContas">R$ 0,00</strong>
+        </div>
+        <div class="sobra-lucro">
+          <span style="font-size: 0.85rem; color: var(--muted);">Seu lucro líquido guardado</span>
+          <strong id="totalLucro" class="cor-verde">R$ 0,00</strong>
+        </div>
+      </div>
+    </section>
+
+    <!-- Histórico -->
+    <section class="card">
+      <div class="card-titulo">Dias Registrados</div>
+      <div id="listaDias"></div>
+    </section>
+  </main>
+
+  <div id="aviso" class="aviso-flutuante">Salvo!</div>
+
+  <script>
+    const CHAVE_DADOS = "motoca_facil_v1";
+    let ultimoCalculo = null;
+    let manterBanner = false;
+
+    function dataParaISO(dt) {
+      return `${dt.getFullYear()}-${String(dt.getMonth() + 1).padStart(2, "0")}-${String(dt.getDate()).padStart(2, "0")}`;
+    }
+
+    function isoParaData(iso) {
+      const [y, m, d] = String(iso).split("-").map(Number);
+      return new Date(y, (m || 1) - 1, d || 1);
+    }
+
+    function amanhaISO() {
+      const hoje = new Date();
+      return dataParaISO(new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate() + 1));
+    }
+
+    let dados = {
+      config: {
+        dataInicio: amanhaISO(),
+        ganhoEstimadoMes: 3500,
+        diasSemana: 5,
+        precoGasolina: 6.10,
+        consumoMoto: 35,
+        custoOleo: 45,
+        intervaloOleo: 1000,
+        kmMedioDia: 90,
+        alimentacaoDia: 20,
+        manutencaoDia: 10,
+        despesasMensais: [
+          { id: 1, nome: "Aluguel", valor: 0 },
+          { id: 2, nome: "Água e Luz", valor: 0 },
+          { id: 3, nome: "Internet", valor: 0 },
+          { id: 4, nome: "Doc. da Moto", valor: 0 },
+          { id: 5, nome: "Lazer", valor: 0 }
+        ]
+      },
+      dias: []
+    };
+
+    function avisar(msg) {
+      const el = document.getElementById("aviso");
+      el.textContent = msg;
+      el.classList.add("mostrar");
+      clearTimeout(avisar._t);
+      avisar._t = setTimeout(() => el.classList.remove("mostrar"), 2300);
+    }
+
+    function lerNumero(v) {
+      if (typeof v === "number") return Number.isFinite(v) ? v : 0;
+      if (!v) return 0;
+      const n = parseFloat(String(v).trim().replace(/\s+/g, "").replace(",", "."));
+      return Number.isFinite(n) ? n : 0;
+    }
+
+    function moeda(v) {
+      return Number(v || 0).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+    }
+
+    function numeroInput(v, casas = 2) {
+      return Number(v || 0).toFixed(casas).replace(".", ",");
+    }
+
+    function alternarConfig() {
+      document.getElementById("painelConfig").classList.toggle("oculto");
+    }
+
+    // Conta todos os dias úteis do mês inteiro E os dias úteis restantes a partir de dataInicio
+    function calcularCalendario() {
+      const ref = isoParaData(dados.config.dataInicio || amanhaISO());
+      const ano = ref.getFullYear();
+      const mes = ref.getMonth();
+      const ultimoDia = new Date(ano, mes + 1, 0).getDate();
+      const diasSem = Number(dados.config.diasSemana) || 5;
+      const inicioISO = dataParaISO(ref);
+      const lancadosSet = new Set(dados.dias.map(d => d.data));
+
+      let diasUteisMesInteiro = 0;
+      let diasUteisAPartirInicio = 0;
+      let diasRestantesNaoLancados = 0;
+
+      for (let dia = 1; dia <= ultimoDia; dia++) {
+        const dt = new Date(ano, mes, dia);
+        const dow = dt.getDay();
+        const iso = dataParaISO(dt);
+
+        const trabalha =
+          diasSem === 7 ||
+          (diasSem === 6 && dow !== 0) ||
+          (diasSem === 5 && dow !== 0 && dow !== 6);
+
+        if (trabalha) {
+          diasUteisMesInteiro++;
+          if (iso >= inicioISO) {
+            diasUteisAPartirInicio++;
+            if (!lancadosSet.has(iso)) {
+              diasRestantesNaoLancados++;
+            }
+          }
+        }
+      }
+
+      return {
+        diasUteisMesInteiro: Math.max(diasUteisMesInteiro, 1),
+        diasUteisAPartirInicio: Math.max(diasUteisAPartirInicio, 1),
+        diasRestantesNaoLancados: Math.max(diasRestantesNaoLancados, 1),
+        dataInicioBR: ref.toLocaleDateString("pt-BR"),
+        nomeMes: ref.toLocaleDateString("pt-BR", { month: "long", year: "numeric" })
+      };
+    }
+
+    // Regra exata solicitada:
+    // Despesa mensal / dias úteis do mês inteiro = valor por dia útil.
+    // Valor por dia útil * dias restantes para trabalhar = despesa proporcional restante.
+    function calcularDespesasProporcionais() {
+      const cal = calcularCalendario();
+      const totalDespesasMensais = (dados.config.despesasMensais || []).reduce(
+        (acc, item) => acc + (Number(item.valor) || 0),
+        0
+      );
+
+      const despesaFixaPorDiaUtil = totalDespesasMensais / cal.diasUteisMesInteiro;
+      const despesaFixaPeriodoInicial = despesaFixaPorDiaUtil * cal.diasUteisAPartirInicio;
+      const despesaFixaRestante = despesaFixaPorDiaUtil * cal.diasRestantesNaoLancados;
+
+      return {
+        cal,
+        totalDespesasMensais,
+        despesaFixaPorDiaUtil,
+        despesaFixaPeriodoInicial,
+        despesaFixaRestante
+      };
+    }
+
+    function calcularCustosDoDia(kmUsado) {
+      const c = dados.config;
+      const prop = calcularDespesasProporcionais();
+
+      const combustivel = kmUsado * (c.precoGasolina / c.consumoMoto);
+      const oleo = kmUsado * (c.custoOleo / c.intervaloOleo);
+      const alimentacao = c.alimentacaoDia;
+      const contasEManutencao = c.manutencaoDia + prop.despesaFixaPorDiaUtil;
+      const totalDia = combustivel + oleo + alimentacao + contasEManutencao;
+
+      return {
+        combustivel,
+        oleo,
+        alimentacao,
+        contasEManutencao,
+        despesaFixaDia: prop.despesaFixaPorDiaUtil,
+        totalDia
+      };
+    }
+
+    function obterPlanejamento() {
+      const prop = calcularDespesasProporcionais();
+      const cal = prop.cal;
+      const c = dados.config;
+
+      // Ganho estimado proporcional aos dias que faltam trabalhar no mês
+      const ganhoEstimadoPorDia = c.ganhoEstimadoMes / cal.diasUteisMesInteiro;
+      const ganhoEstimadoPeriodo = ganhoEstimadoPorDia * cal.diasUteisAPartirInicio;
+
+      // Despesas operacionais + fixas para os dias que faltam trabalhar
+      const custoMedioDia = calcularCustosDoDia(c.kmMedioDia).totalDia;
+      const despesasTotaisPeriodo = custoMedioDia * cal.diasUteisAPartirInicio;
+
+      // Lucro desejado no período = Ganho estimado do período - Despesas do período
+      const lucroDesejadoPeriodo = ganhoEstimadoPeriodo - despesasTotaisPeriodo;
+      const metaLucroPorDia = lucroDesejadoPeriodo / cal.diasUteisAPartirInicio;
+
+      return {
+        cal,
+        prop,
+        ganhoEstimadoPorDia,
+        ganhoEstimadoPeriodo,
+        despesasTotaisPeriodo,
+        lucroDesejadoPeriodo,
+        metaLucroPorDia
+      };
+    }
+
+    function lerKmHoje() {
+      const iniTxt = document.getElementById("kmInicial").value.trim();
+      const fimTxt = document.getElementById("kmFinal").value.trim();
+      const ini = lerNumero(iniTxt);
+      const fim = lerNumero(fimTxt);
+
+      if (iniTxt !== "" && fimTxt !== "") {
+        if (fim < ini) {
+          return { km: 0, invalido: true, texto: "KM final menor que inicial", kmIni: ini, kmFim: fim };
+        }
+        const rodado = fim - ini;
+        return { km: rodado, invalido: false, texto: `${rodado} km (${ini} → ${fim})`, kmIni: ini, kmFim: fim };
+      }
+
+      if (fimTxt !== "" && iniTxt === "") {
+        return { km: Math.max(0, fim), invalido: false, texto: `${fim} km`, kmIni: null, kmFim: fim };
+      }
+
+      return {
+        km: dados.config.kmMedioDia,
+        invalido: false,
+        texto: `${dados.config.kmMedioDia} km (média)`,
+        kmIni: iniTxt !== "" ? ini : null,
+        kmFim: null
+      };
+    }
+
+    function calcularHoje() {
+      const bruto = lerNumero(document.getElementById("ganhoDia").value);
+      const kmObj = lerKmHoje();
+      const plano = obterPlanejamento();
+
+      const elKm = document.getElementById("textoKmHoje");
+      elKm.textContent = kmObj.texto;
+      elKm.className = kmObj.invalido ? "cor-vermelha" : "cor-azul";
+
+      const kmBase = kmObj.invalido ? dados.config.kmMedioDia : kmObj.km;
+      const custos = calcularCustosDoDia(kmBase);
+      const lucro = bruto - custos.totalDia;
+
+      ultimoCalculo = {
+        bruto,
+        km: kmBase,
+        kmIni: kmObj.kmIni,
+        kmFim: kmObj.kmFim,
+        invalido: kmObj.invalido,
+        ...custos,
+        lucro
+      };
+
+      document.getElementById("guardarComb").textContent = moeda(custos.combustivel);
+      document.getElementById("guardarOleo").textContent = moeda(custos.oleo);
+      document.getElementById("guardarAlim").textContent = moeda(custos.alimentacao);
+      document.getElementById("guardarContas").textContent = moeda(custos.contasEManutencao);
+
+      const elLucro = document.getElementById("lucroHoje");
+      elLucro.textContent = moeda(lucro);
+      elLucro.className = lucro >= 0 ? "cor-verde" : "cor-vermelha";
+
+      document.getElementById("subtextoMetaHoje").textContent =
+        `Meta de lucro hoje: ${moeda(plano.metaLucroPorDia)}`;
+
+      const banner = document.getElementById("bannerResultado");
+      if (bruto <= 0) {
+        if (!manterBanner) banner.className = "banner-resultado";
+        return;
+      }
+
+      manterBanner = false;
+      mostrarBannerResultado(lucro, plano.metaLucroPorDia, false);
+    }
+
+    function mostrarBannerResultado(lucro, metaLucroDia, salvoAgora) {
+      const banner = document.getElementById("bannerResultado");
+      const titulo = document.getElementById("bannerTitulo");
+      const texto = document.getElementById("bannerTexto");
+      const valor = document.getElementById("bannerValor");
+
+      const dif = lucro - metaLucroDia;
+      const extra = salvoAgora ? "Dia salvo! " : "";
+
+      banner.className = "banner-resultado ativo";
+
+      if (dif > 0.05) {
+        banner.classList.add("super");
+        titulo.textContent = "🚀 SUPER FELICITAÇÕES! Você ultrapassou a meta!";
+        titulo.style.color = "var(--primary)";
+        texto.textContent = `${extra}Parabéns pelo corre! Você pagou todas as despesas de hoje e ainda fez ${moeda(dif)} acima da meta do dia.`;
+      } else if (Math.abs(dif) <= 0.05) {
+        banner.classList.add("parabens");
+        titulo.textContent = "🎉 PARABÉNS! Você atingiu a meta do dia!";
+        titulo.style.color = "var(--success)";
+        texto.textContent = `${extra}Missão cumprida! Todas as despesas do dia foram separadas e você bateu exatamente sua meta.`;
+      } else {
+        banner.classList.add("incentivo");
+        titulo.textContent = "💪 Continue firme! Cada corrida soma!";
+        titulo.style.color = "var(--info)";
+        texto.textContent = `${extra}Faltaram ${moeda(Math.abs(dif))} para a meta de hoje, mas suas despesas já estão garantidas. Amanhã você recupera!`;
+      }
+
+      valor.textContent = `Você lucrou exatamente: ${moeda(lucro)}`;
+    }
+
+    function salvarDia() {
+      const data = document.getElementById("dataDia").value;
+      const bruto = lerNumero(document.getElementById("ganhoDia").value);
+      const kmObj = lerKmHoje();
+
+      if (!data) {
+        avisar("Escolha a data do dia.");
+        return;
+      }
+      if (kmObj.invalido) {
+        avisar("KM final deve ser maior que o inicial.");
+        return;
+      }
+      if (bruto <= 0) {
+        avisar("Digite quanto você ganhou hoje.");
+        return;
+      }
+
+      const planoAntes = obterPlanejamento();
+      const calc = ultimoCalculo;
+
+      dados.dias.push({
+        id: Date.now() + Math.random(),
+        data,
+        bruto: calc.bruto,
+        km: calc.km,
+        kmIni: calc.kmIni,
+        kmFim: calc.kmFim,
+        combustivel: calc.combustivel,
+        oleo: calc.oleo,
+        alimentacao: calc.alimentacao,
+        contasEManutencao: calc.contasEManutencao,
+        lucro: calc.lucro
+      });
+
+      dados.dias.sort((a, b) => a.data.localeCompare(b.data));
+
+      const prox = isoParaData(data);
+      prox.setDate(prox.getDate() + 1);
+      document.getElementById("dataDia").value = dataParaISO(prox);
+
+      if (calc.kmFim !== null && calc.kmFim > 0) {
+        document.getElementById("kmInicial").value = String(calc.kmFim);
+      } else {
+        document.getElementById("kmInicial").value = "";
+      }
+      document.getElementById("kmFinal").value = "";
+      document.getElementById("ganhoDia").value = "";
+
+      salvarStorage();
+      atualizarTela();
+
+      manterBanner = true;
+      calcularHoje();
+      mostrarBannerResultado(calc.lucro, planoAntes.metaLucroPorDia, true);
+      avisar("Dia salvo com sucesso!");
+    }
+
+    function apagarDia(id) {
+      if (!confirm("Apagar este dia?")) return;
+      dados.dias = dados.dias.filter(d => d.id !== id);
+      manterBanner = false;
+      salvarStorage();
+      atualizarTela();
+      calcularHoje();
+      avisar("Dia apagado.");
+    }
+
+    function adicionarDespesa() {
+      const nomeEl = document.getElementById("novaDespesaNome");
+      const valorEl = document.getElementById("novaDespesaValor");
+      const nome = nomeEl.value.trim();
+      const valor = Math.max(0, lerNumero(valorEl.value));
+
+      if (!nome || valor <= 0) {
+        avisar("Preencha o nome e o valor da conta.");
+        return;
+      }
+
+      dados.config.despesasMensais.push({
+        id: Date.now() + Math.random(),
+        nome,
+        valor
+      });
+
+      nomeEl.value = "";
+      valorEl.value = "";
+      salvarStorage();
+      renderizarDespesas();
+      atualizarTela();
+      calcularHoje();
+      avisar("Conta adicionada!");
+    }
+
+    function editarValorDespesa(id, valStr) {
+      const item = dados.config.despesasMensais.find(d => d.id === id);
+      if (!item) return;
+      item.valor = Math.max(0, lerNumero(valStr));
+      salvarStorage();
+      atualizarTela();
+      calcularHoje();
+    }
+
+    function removerDespesa(id) {
+      dados.config.despesasMensais = dados.config.despesasMensais.filter(d => d.id !== id);
+      salvarStorage();
+      renderizarDespesas();
+      atualizarTela();
+      calcularHoje();
+      avisar("Conta removida.");
+    }
+
+    function renderizarDespesas() {
+      const box = document.getElementById("listaDespesas");
+      const lista = dados.config.despesasMensais || [];
+
+      if (lista.length === 0) {
+        box.innerHTML = `<p style="font-size:0.85rem; color:var(--muted); margin-bottom:10px;">Nenhuma conta fixa cadastrada.</p>`;
+        return;
+      }
+
+      box.innerHTML = lista
+        .map(item => `
+          <div class="despesa-linha">
+            <span>${item.nome}</span>
+            <input
+              type="text"
+              inputmode="decimal"
+              value="${numeroInput(item.valor, 2)}"
+              oninput="editarValorDespesa(${item.id}, this.value)"
+              style="width: 115px; min-height: 38px; padding: 8px; font-size: 0.95rem;"
+            />
+            <button type="button" class="btn-apagar btn-pequeno" onclick="removerDespesa(${item.id})">X</button>
+          </div>
+        `)
+        .join("");
+    }
+
+    function salvarConfig() {
+      const dataInicio = document.getElementById("dataInicio").value || amanhaISO();
+      const consumo = lerNumero(document.getElementById("consumoMoto").value);
+      const intervalo = lerNumero(document.getElementById("intervaloOleo").value);
+
+      dados.config = {
+        ...dados.config,
+        dataInicio,
+        ganhoEstimadoMes: Math.max(0, lerNumero(document.getElementById("ganhoEstimadoMes").value)),
+        diasSemana: parseInt(document.getElementById("diasSemana").value, 10) || 5,
+        alimentacaoDia: Math.max(0, lerNumero(document.getElementById("alimentacaoDia").value)),
+        precoGasolina: Math.max(0, lerNumero(document.getElementById("precoGasolina").value)),
+        consumoMoto: consumo > 0 ? consumo : 1,
+        custoOleo: Math.max(0, lerNumero(document.getElementById("custoOleo").value)),
+        intervaloOleo: intervalo > 0 ? intervalo : 1000,
+        kmMedioDia: Math.max(0, lerNumero(document.getElementById("kmMedioDia").value)),
+        manutencaoDia: Math.max(0, lerNumero(document.getElementById("manutencaoDia").value))
+      };
+
+      if (dados.dias.length === 0) {
+        document.getElementById("dataDia").value = dataInicio;
+      }
+
+      salvarStorage();
+      atualizarTela();
+      calcularHoje();
+      document.getElementById("painelConfig").classList.add("oculto");
+      avisar("Configurações salvas!");
+    }
+
+    function atualizarTela() {
+      const plano = obterPlanejamento();
+      const prop = plano.prop;
+      const cal = plano.cal;
+
+      const totais = dados.dias.reduce(
+        (acc, d) => {
+          acc.comb += d.combustivel;
+          acc.oleo += d.oleo;
+          acc.alim += d.alimentacao;
+          acc.contas += d.contasEManutencao;
+          acc.lucro += d.lucro;
+          return acc;
+        },
+        { comb: 0, oleo: 0, alim: 0, contas: 0, lucro: 0 }
+      );
+
+      document.getElementById("textoTopoPeriodo").textContent =
+        `Início: ${cal.dataInicioBR} • ${cal.nomeMes}`;
+
+      document.getElementById("kpiDiasRestantes").textContent =
+        `${cal.diasRestantesNaoLancados} de ${cal.diasUteisMesInteiro} dias`;
+
+      document.getElementById("kpiDespesaProporcional").textContent =
+        moeda(prop.despesaFixaRestante);
+
+      document.getElementById("kpiMetaGanhoDia").textContent =
+        moeda(plano.ganhoEstimadoPorDia);
+
+      const elLucroPeriodo = document.getElementById("kpiLucroPeriodo");
+      elLucroPeriodo.textContent = moeda(plano.lucroDesejadoPeriodo);
+      elLucroPeriodo.className = plano.lucroDesejadoPeriodo >= 0 ? "cor-verde" : "cor-vermelha";
+
+      document.getElementById("textoCalculoDespesas").innerHTML =
+        `Suas contas do mês (${moeda(prop.totalDespesasMensais)}) ÷ ${cal.diasUteisMesInteiro} dias úteis = <strong>${moeda(prop.despesaFixaPorDiaUtil)}/dia</strong>. Como faltam <strong>${cal.diasRestantesNaoLancados} dias úteis</strong>, suas contas proporcionais somam <strong>${moeda(prop.despesaFixaRestante)}</strong>.`;
+
+      const alvoLucro = Math.max(plano.lucroDesejadoPeriodo, 0);
+      const pct = alvoLucro > 0 ? Math.min((totais.lucro / alvoLucro) * 100, 100) : 0;
+      document.getElementById("textoProgresso").textContent =
+        `${moeda(totais.lucro)} / ${moeda(alvoLucro)}`;
+      document.getElementById("barraProgresso").style.width = `${Math.max(pct, 0)}%`;
+
+      document.getElementById("totalComb").textContent = moeda(totais.comb);
+      document.getElementById("totalOleo").textContent = moeda(totais.oleo);
+      document.getElementById("totalAlim").textContent = moeda(totais.alim);
+      document.getElementById("totalContas").textContent = moeda(totais.contas);
+
+      const elTotalLucro = document.getElementById("totalLucro");
+      elTotalLucro.textContent = moeda(totais.lucro);
+      elTotalLucro.className = totais.lucro >= 0 ? "cor-verde" : "cor-vermelha";
+
+      renderizarDias();
+    }
+
+    function renderizarDias() {
+      const lista = document.getElementById("listaDias");
+      if (dados.dias.length === 0) {
+        lista.innerHTML = `<p style="text-align:center; color:var(--muted); font-size:0.88rem; padding:12px;">Nenhum dia registrado ainda.</p>`;
+        return;
+      }
+
+      lista.innerHTML = [...dados.dias]
+        .reverse()
+        .map(d => {
+          const dt = isoParaData(d.data);
+          const dataBR = dt.toLocaleDateString("pt-BR");
+          const diaSem = dt.toLocaleDateString("pt-BR", { weekday: "short" });
+          const cor = d.lucro >= 0 ? "cor-verde" : "cor-vermelha";
+
+          return `
+            <div class="dia-card">
+              <div>
+                <strong style="text-transform:capitalize; font-size:0.95rem;">${dataBR} (${diaSem})</strong>
+                <div style="font-size:0.8rem; color:var(--muted);">Ganhou: ${moeda(d.bruto)} • ${d.km} km</div>
+              </div>
+              <div style="text-align:right;">
+                <div style="font-size:0.75rem; color:var(--muted);">Lucro</div>
+                <strong class="${cor}" style="font-size:1rem;">${moeda(d.lucro)}</strong>
+                <div>
+                  <button type="button" class="btn-apagar btn-pequeno" style="margin-top:4px;" onclick="apagarDia(${d.id})">Apagar</button>
+                </div>
+              </div>
+            </div>
+          `;
+        })
+        .join("");
+    }
+
+    async function copiarWhatsApp() {
+      const c = ultimoCalculo;
+      const dataStr = document.getElementById("dataDia").value || dados.config.dataInicio || amanhaISO();
+      const dataBR = isoParaData(dataStr).toLocaleDateString("pt-BR");
+
+      const texto = [
+        `*MOTOCA — ${dataBR}*`,
+        `• Ganho do dia: ${moeda(c ? c.bruto : 0)} (${c ? c.km : 0} km)`,
+        `• Guardar Combustível: ${moeda(c ? c.combustivel : 0)}`,
+        `• Guardar Troca de Óleo: ${moeda(c ? c.oleo : 0)}`,
+        `• Guardar Alimentação: ${moeda(c ? c.alimentacao : 0)}`,
+        `• Guardar Contas + Manutenção: ${moeda(c ? c.contasEManutencao : 0)}`,
+        `• *Lucro Líquido: ${moeda(c ? c.lucro : 0)}*`
+      ].join("\n");
+
+      try {
+        await navigator.clipboard.writeText(texto);
+        avisar("Resumo copiado para o WhatsApp!");
+      } catch (e) {
+        prompt("Copie o texto abaixo:", texto);
+      }
+    }
+
+    function salvarStorage() {
+      localStorage.setItem(CHAVE_DADOS, JSON.stringify(dados));
+    }
+
+    function iniciar() {
+      const salvo = localStorage.getItem(CHAVE_DADOS);
+      if (salvo) {
+        try {
+          const parsed = JSON.parse(salvo);
+          dados.config = { ...dados.config, ...(parsed.config || {}) };
+          dados.dias = Array.isArray(parsed.dias) ? parsed.dias : [];
+        } catch (e) {}
+      }
+
+      const c = dados.config;
+      document.getElementById("dataInicio").value = c.dataInicio || amanhaISO();
+      document.getElementById("dataDia").value = c.dataInicio || amanhaISO();
+      document.getElementById("ganhoEstimadoMes").value = numeroInput(c.ganhoEstimadoMes, 2);
+      document.getElementById("diasSemana").value = String(c.diasSemana);
+      document.getElementById("alimentacaoDia").value = numeroInput(c.alimentacaoDia, 2);
+      document.getElementById("precoGasolina").value = numeroInput(c.precoGasolina, 2);
+      document.getElementById("consumoMoto").value = numeroInput(c.consumoMoto, 1);
+      document.getElementById("custoOleo").value = numeroInput(c.custoOleo, 2);
+      document.getElementById("intervaloOleo").value = String(c.intervaloOleo);
+      document.getElementById("kmMedioDia").value = String(c.kmMedioDia);
+      document.getElementById("manutencaoDia").value = numeroInput(c.manutencaoDia, 2);
+
+      renderizarDespesas();
+      atualizarTela();
+      calcularHoje();
+    }
+
+    iniciar();
+  </script>
+</body>
+</html>
