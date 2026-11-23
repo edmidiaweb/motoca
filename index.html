@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0f172a" />
   <title>MOTOCA — Controle Fácil de Entregas</title>
   <style>
     :root {
@@ -44,7 +45,6 @@
       gap: 16px;
     }
 
-    /* Topo */
     .topbar {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -78,7 +78,6 @@
       cursor: pointer;
     }
 
-    /* Cartões */
     .card {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -93,7 +92,6 @@
       color: var(--text);
     }
 
-    /* Resumo Fácil */
     .resumo-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -152,7 +150,6 @@
       transition: width 0.3s ease;
     }
 
-    /* Campos grandes e fáceis */
     .linha-form {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -209,7 +206,6 @@
       margin-bottom: 12px;
     }
 
-    /* Rateio */
     .quadro-guardar {
       background: var(--surface-2);
       border-radius: 14px;
@@ -262,7 +258,6 @@
       font-size: 1.25rem;
     }
 
-    /* Mensagem de Parabéns / Incentivo */
     .banner-resultado {
       margin-top: 12px;
       border-radius: 14px;
@@ -310,7 +305,6 @@
       color: var(--success);
     }
 
-    /* Botões grandes */
     .acoes-dia {
       display: grid;
       grid-template-columns: 1.3fr 1fr;
@@ -356,7 +350,6 @@
       border: 1px solid rgba(239, 68, 68, 0.35);
     }
 
-    /* Lista de Despesas Mensais */
     .despesa-linha {
       display: flex;
       justify-content: space-between;
@@ -375,7 +368,6 @@
       flex: 1;
     }
 
-    /* Histórico */
     .dia-card {
       background: var(--bg);
       border: 1px solid var(--border);
@@ -418,7 +410,6 @@
 </head>
 <body>
   <main class="app">
-    <!-- Topo -->
     <header class="topbar">
       <div>
         <h1>MOTOCA</h1>
@@ -429,7 +420,6 @@
       </button>
     </header>
 
-    <!-- Painel de Configuração (Fácil e Direto) -->
     <section id="painelConfig" class="card oculto">
       <div class="card-titulo">1. Suas Contas e Meta do Mês</div>
 
@@ -514,7 +504,6 @@
       </button>
     </section>
 
-    <!-- Resumo Claro -->
     <section class="card">
       <div class="resumo-grid">
         <div class="caixa-info">
@@ -548,7 +537,6 @@
       </div>
     </section>
 
-    <!-- Fechamento do Dia -->
     <section class="card">
       <div class="card-titulo">Fechar o Dia de Trabalho</div>
 
@@ -617,7 +605,6 @@
         </div>
       </div>
 
-      <!-- Mensagem Motivacional / Parabéns / Super Felicitações -->
       <div id="bannerResultado" class="banner-resultado">
         <h4 id="bannerTitulo"></h4>
         <p id="bannerTexto"></p>
@@ -630,7 +617,6 @@
       </div>
     </section>
 
-    <!-- Caixinhas Acumuladas -->
     <section class="card">
       <div class="card-titulo">Total Guardado nas Caixinhas</div>
       <div class="grade-guardar">
@@ -657,7 +643,6 @@
       </div>
     </section>
 
-    <!-- Histórico -->
     <section class="card">
       <div class="card-titulo">Dias Registrados</div>
       <div id="listaDias"></div>
@@ -670,6 +655,37 @@
     const CHAVE_DADOS = "motoca_facil_v1";
     let ultimoCalculo = null;
     let manterBanner = false;
+
+    function configurarManifestoPWA() {
+      try {
+        const svgIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128"><rect width="128" height="128" rx="28" fill="#0f172a"/><circle cx="64" cy="64" r="44" fill="#f59e0b"/><text x="64" y="76" font-family="Arial, sans-serif" font-size="40" font-weight="900" fill="#0f172a" text-anchor="middle">M</text></svg>`;
+        const iconUrl = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svgIcon);
+
+        let iconLink = document.querySelector("link[rel='icon']");
+        if (!iconLink) {
+          iconLink = document.createElement("link");
+          iconLink.rel = "icon";
+          document.head.appendChild(iconLink);
+        }
+        iconLink.href = iconUrl;
+
+        const manifestObj = {
+          name: "MOTOCA — Controle Fácil",
+          short_name: "MOTOCA",
+          start_url: "./",
+          display: "standalone",
+          background_color: "#0f172a",
+          theme_color: "#0f172a",
+          icons: [{ src: iconUrl, sizes: "128x128", type: "image/svg+xml" }]
+        };
+        const blob = new Blob([JSON.stringify(manifestObj)], { type: "application/json" });
+        const manifestUrl = URL.createObjectURL(blob);
+        const manifestLink = document.createElement("link");
+        manifestLink.rel = "manifest";
+        manifestLink.href = manifestUrl;
+        document.head.appendChild(manifestLink);
+      } catch (e) {}
+    }
 
     function dataParaISO(dt) {
       return `${dt.getFullYear()}-${String(dt.getMonth() + 1).padStart(2, "0")}-${String(dt.getDate()).padStart(2, "0")}`;
@@ -735,7 +751,6 @@
       document.getElementById("painelConfig").classList.toggle("oculto");
     }
 
-    // Conta todos os dias úteis do mês inteiro E os dias úteis restantes a partir de dataInicio
     function calcularCalendario() {
       const ref = isoParaData(dados.config.dataInicio || amanhaISO());
       const ano = ref.getFullYear();
@@ -779,9 +794,6 @@
       };
     }
 
-    // Regra exata solicitada:
-    // Despesa mensal / dias úteis do mês inteiro = valor por dia útil.
-    // Valor por dia útil * dias restantes para trabalhar = despesa proporcional restante.
     function calcularDespesasProporcionais() {
       const cal = calcularCalendario();
       const totalDespesasMensais = (dados.config.despesasMensais || []).reduce(
@@ -827,15 +839,12 @@
       const cal = prop.cal;
       const c = dados.config;
 
-      // Ganho estimado proporcional aos dias que faltam trabalhar no mês
       const ganhoEstimadoPorDia = c.ganhoEstimadoMes / cal.diasUteisMesInteiro;
       const ganhoEstimadoPeriodo = ganhoEstimadoPorDia * cal.diasUteisAPartirInicio;
 
-      // Despesas operacionais + fixas para os dias que faltam trabalhar
       const custoMedioDia = calcularCustosDoDia(c.kmMedioDia).totalDia;
       const despesasTotaisPeriodo = custoMedioDia * cal.diasUteisAPartirInicio;
 
-      // Lucro desejado no período = Ganho estimado do período - Despesas do período
       const lucroDesejadoPeriodo = ganhoEstimadoPeriodo - despesasTotaisPeriodo;
       const metaLucroPorDia = lucroDesejadoPeriodo / cal.diasUteisAPartirInicio;
 
@@ -1237,6 +1246,8 @@
     }
 
     function iniciar() {
+      configurarManifestoPWA();
+
       const salvo = localStorage.getItem(CHAVE_DADOS);
       if (salvo) {
         try {
